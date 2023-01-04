@@ -72,11 +72,7 @@ function getInferredName(): string {
 }
 
 function getAndroidApiLevel(apiLevel?: string): number | undefined {
-  if (!!apiLevel) {
-    return +apiLevel
-  }
-
-  return
+  return apiLevel ? +apiLevel : undefined
 }
 
 export async function getParameters(): Promise<Params> {
