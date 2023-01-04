@@ -45584,10 +45584,7 @@ function getInferredName() {
     return github.context.sha;
 }
 function getAndroidApiLevel(apiLevel) {
-    if (!!apiLevel) {
-        return +apiLevel;
-    }
-    return;
+    return apiLevel ? +apiLevel : undefined;
 }
 function getParameters() {
     return __awaiter(this, void 0, void 0, function* () {
