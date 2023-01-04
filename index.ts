@@ -45,7 +45,8 @@ const run = async () => {
     repoName,
     pullRequestId,
     env,
-    async
+    async,
+    androidApiLevel,
   } = await getParameters()
 
   const appFile = await validateAppFile(
@@ -67,8 +68,11 @@ const run = async () => {
     repoName: repoName,
     pullRequestId: pullRequestId,
     env: env,
-    agent: 'gh-action'
+    agent: 'gh-action',
+    androidApiLevel: androidApiLevel,
   }
+
+  info(`something  ${androidApiLevel}`)
 
   const { uploadId, teamId, targetId: appId } = await client.uploadRequest(
     request,
@@ -77,7 +81,6 @@ const run = async () => {
     mappingFile && await zipIfFolder(mappingFile),
   )
   const consoleUrl = getConsoleUrl(uploadId, teamId, appId)
-  info(`Visit the web console for more details about the upload: ${consoleUrl}\n`)
 
   !async && new StatusPoller(client, uploadId, consoleUrl).startPolling()
 }
