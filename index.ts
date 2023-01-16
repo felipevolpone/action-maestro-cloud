@@ -9,7 +9,7 @@ import { info } from './log';
 
 const knownAppTypes = ['ANDROID_APK', 'IOS_BUNDLE']
 
-const createWorkspaceZip = async (workspaceFolder: string | null): Promise<string | null> => {
+const createWorkspaceZip = (workspaceFolder: string | null): string | null => {
   let resolvedWorkspaceFolder = workspaceFolder
   if (resolvedWorkspaceFolder === null || workspaceFolder?.length === 0) {
     if (existsSync('.maestro')) {
@@ -24,7 +24,7 @@ const createWorkspaceZip = async (workspaceFolder: string | null): Promise<strin
   } else if (!existsSync(resolvedWorkspaceFolder)) {
     throw new Error(`Workspace directory does not exist: ${resolvedWorkspaceFolder}`)
   }
-  await zipFolder(resolvedWorkspaceFolder, 'workspace.zip');
+  zipFolder(resolvedWorkspaceFolder, 'workspace.zip');
   return 'workspace.zip'
 }
 
@@ -56,7 +56,7 @@ const run = async () => {
     throw new Error(`Unsupported app file type: ${appFile.type}`)
   }
 
-  const workspaceZip = await createWorkspaceZip(workspaceFolder)
+  const workspaceZip = createWorkspaceZip(workspaceFolder)
 
   const client = new ApiClient(apiKey, apiUrl)
 
