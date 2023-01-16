@@ -45303,7 +45303,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.zipIfFolder = exports.zipFolder = void 0;
+exports.zipIfFolder = exports.zipFolderSync = exports.zipFolder = void 0;
 const fs_1 = __nccwpck_require__(7147);
 const promises_1 = __nccwpck_require__(3292);
 const path_1 = __importDefault(__nccwpck_require__(1017));
@@ -45329,6 +45329,22 @@ function zipFolder(inputDirectory, outputArchive, subdirectory = false) {
     });
 }
 exports.zipFolder = zipFolder;
+function zipFolderSync(inputDirectory, outputArchive, subdirectory = false) {
+    const output = createWriteStream(outputArchive);
+    output.on('close', () => {
+        return;
+    });
+    const archive = archiver('zip');
+    archive.on('error', (err) => {
+        throw new Error('failed to create zip file');
+    });
+    archive.pipe(output);
+    if ((0, fs_1.existsSync)(inputDirectory)) {
+        archive.directory(inputDirectory, subdirectory);
+    }
+    archive.finalize();
+}
+exports.zipFolderSync = zipFolderSync;
 function zipIfFolder(inputPath) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -45419,7 +45435,7 @@ const createWorkspaceZip = (workspaceFolder) => {
     else if (!(0, fs_1.existsSync)(resolvedWorkspaceFolder)) {
         throw new Error(`Workspace directory does not exist: ${resolvedWorkspaceFolder}`);
     }
-    (() => __awaiter(void 0, void 0, void 0, function* () { return yield (0, archive_utils_1.zipFolder)(resolvedWorkspaceFolder, 'workspace.zip'); }))();
+    (0, archive_utils_1.zipFolderSync)(resolvedWorkspaceFolder, 'workspace.zip');
     return 'workspace.zip';
 };
 const getConsoleUrl = (uploadId, teamId, appId) => {
