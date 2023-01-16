@@ -24,7 +24,7 @@ const createWorkspaceZip = (workspaceFolder: string | null): string | null => {
   } else if (!existsSync(resolvedWorkspaceFolder)) {
     throw new Error(`Workspace directory does not exist: ${resolvedWorkspaceFolder}`)
   }
-  zipFolder(resolvedWorkspaceFolder, 'workspace.zip');
+  (async () => await zipFolder(resolvedWorkspaceFolder, 'workspace.zip'))();
   return 'workspace.zip'
 }
 
