@@ -33,6 +33,33 @@ export async function zipFolder(
     });
 }
 
+export function zipFolderSync(
+    inputDirectory: string,
+    outputArchive: string,
+    subdirectory: string | boolean = false
+) {
+    const output = createWriteStream(outputArchive);
+
+    output.on('close', () => {
+        return
+    });
+
+    const archive = archiver('zip');
+
+    archive.on('error', (err: any) => {
+        throw new Error('failed to create zip file')
+    });
+
+    archive.pipe(output);
+
+    if (existsSync(inputDirectory)) {
+        archive.directory(inputDirectory, subdirectory);
+    }
+
+    archive.finalize();
+}
+
+
 export async function zipIfFolder(
     inputPath: string,
 ): Promise<string> {

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import ApiClient, { UploadRequest } from './ApiClient'
 import { validateAppFile } from './app_file';
-import { zipFolder, zipIfFolder } from './archive_utils';
+import { zipFolder, zipFolderSync, zipIfFolder } from './archive_utils';
 import { getParameters } from './params';
 import { existsSync } from 'fs';
 import StatusPoller from './StatusPoller';
@@ -24,7 +24,7 @@ const createWorkspaceZip = (workspaceFolder: string | null): string | null => {
   } else if (!existsSync(resolvedWorkspaceFolder)) {
     throw new Error(`Workspace directory does not exist: ${resolvedWorkspaceFolder}`)
   }
-  (async () => await zipFolder(resolvedWorkspaceFolder, 'workspace.zip'))();
+  zipFolderSync(resolvedWorkspaceFolder, 'workspace.zip');
   return 'workspace.zip'
 }
 
