@@ -3,7 +3,7 @@ import ApiClient, { UploadRequest } from './ApiClient'
 import { validateAppFile } from './app_file';
 import { zipFolder, zipFolderSync, zipIfFolder } from './archive_utils';
 import { getParameters } from './params';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import StatusPoller from './StatusPoller';
 import { info } from './log';
 
@@ -11,6 +11,9 @@ const knownAppTypes = ['ANDROID_APK', 'IOS_BUNDLE']
 
 const createWorkspaceZip = (workspaceFolder: string | null): string | null => {
   let resolvedWorkspaceFolder = workspaceFolder
+  readdirSync('.').forEach(file => {
+    console.log(file);
+  });
   if (resolvedWorkspaceFolder === null || workspaceFolder?.length === 0) {
     if (existsSync('.maestro')) {
       resolvedWorkspaceFolder = '.maestro'
