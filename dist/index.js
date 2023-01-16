@@ -45401,7 +45401,7 @@ const fs_1 = __nccwpck_require__(7147);
 const StatusPoller_1 = __importDefault(__nccwpck_require__(2575));
 const log_1 = __nccwpck_require__(3826);
 const knownAppTypes = ['ANDROID_APK', 'IOS_BUNDLE'];
-const createWorkspaceZip = (workspaceFolder) => __awaiter(void 0, void 0, void 0, function* () {
+const createWorkspaceZip = (workspaceFolder) => {
     let resolvedWorkspaceFolder = workspaceFolder;
     if (resolvedWorkspaceFolder === null || (workspaceFolder === null || workspaceFolder === void 0 ? void 0 : workspaceFolder.length) === 0) {
         if ((0, fs_1.existsSync)('.maestro')) {
@@ -45419,9 +45419,9 @@ const createWorkspaceZip = (workspaceFolder) => __awaiter(void 0, void 0, void 0
     else if (!(0, fs_1.existsSync)(resolvedWorkspaceFolder)) {
         throw new Error(`Workspace directory does not exist: ${resolvedWorkspaceFolder}`);
     }
-    yield (0, archive_utils_1.zipFolder)(resolvedWorkspaceFolder, 'workspace.zip');
+    (0, archive_utils_1.zipFolder)(resolvedWorkspaceFolder, 'workspace.zip');
     return 'workspace.zip';
-});
+};
 const getConsoleUrl = (uploadId, teamId, appId) => {
     return `https://console.mobile.dev/uploads/${uploadId}?teamId=${teamId}&appId=${appId}`;
 };
@@ -45432,7 +45432,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!knownAppTypes.includes(appFile.type)) {
         throw new Error(`Unsupported app file type: ${appFile.type}`);
     }
-    const workspaceZip = yield createWorkspaceZip(workspaceFolder);
+    const workspaceZip = createWorkspaceZip(workspaceFolder);
     const client = new ApiClient_1.default(apiKey, apiUrl);
     (0, log_1.info)("Uploading to Maestro Cloud");
     const request = {
